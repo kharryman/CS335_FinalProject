@@ -5,12 +5,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mm.tools.ScreenManager;
 import com.mm.tools.ScreenManager.Screen;
 
-
-//GAME CLASS
+/**
+ * 
+ * 
+ *
+ */
 public class MegaManGame extends Game {
 	public static final int V_WIDTH = 400;
 	public static final int V_HEIGHT  = 208;
-	public final static float PPM = 100; //PIXELS PER METER
+	public final static float PPM = 90; //pixels per meter
 	public SpriteBatch batch;
 	
 	
@@ -22,8 +25,9 @@ public class MegaManGame extends Game {
 		ScreenManager.getInstance().show(Screen.PLAYSCREEN);
 	}
 	
+	/*
+	 * */
 	public void changeScreen(int selection){
-		//dispose of previous screen
 		dispose();
 		
 		//select a new screen
