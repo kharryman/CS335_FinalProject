@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="50" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="mmtileset" tilewidth="16" tileheight="16" spacing="2" margin="2">
+  <image source="mmtileset.png" trans="ff00ff" width="476" height="420"/>
+ </tileset>
+ <layer name="background" width="25" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztlksKwkAQRDvZKugpFL2C3v8CSlwYL2E8gJVFkcEfdEihYC0elVW9ZKYD3VYRTei4oP+APIJbNT3sXuF5LejvYbcddnzTwVnP/E9Zxxm9bQypcHR9bwypcGzAtkif1XtmYF6kwrED+yIVjjGwO/NeWdh9Bad4pkv2fepZ1BHLWvMd7M7MYpYx826HHXbYYYcddvyfg3ur0sEdTul4PDM7fsPBu3+1c0/FHewzWwM=
+  </data>
+ </layer>
+ <objectgroup name="ground">
+  <object x="16" y="16" width="16" height="288"/>
+  <object x="32" y="304" width="80" height="16"/>
+  <object x="288" y="304" width="80" height="16"/>
+  <object x="368" y="16" width="16" height="288"/>
+  <object x="160" y="144" width="64" height="128"/>
+  <object x="368" y="320" width="16" height="384"/>
+  <object x="16" y="320" width="16" height="464"/>
+  <object x="32" y="784" width="368" height="16"/>
+ </objectgroup>
+</map>
