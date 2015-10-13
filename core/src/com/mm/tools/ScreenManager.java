@@ -18,8 +18,11 @@ public final class ScreenManager {
 	
 	
 	
-	//ENUM
-	//SCREEN SELECTION MENU
+	/**========================================================================
+	 * 
+	 *
+	 *=========================================================================
+	 */
 	public enum Screen{
 	
 		PLAYSCREEN{
@@ -51,7 +54,7 @@ public final class ScreenManager {
 			@Override
 			protected com.badlogic.gdx.Screen getScreenInstance(){
 				PlayScreen ps3 = new PlayScreen((MegaManGame)game, "mapC.tmx", 3);
-				ps3.initPlayer(15,  25);
+				ps3.initPlayer(45,  25);
 				return ps3;
 			}
 		};
@@ -62,7 +65,6 @@ public final class ScreenManager {
 
 	
 	public static ScreenManager getInstance(){
-		//if screen is set to null, create new instance.
 		if(null == instance){
 			instance = new ScreenManager();
 		}

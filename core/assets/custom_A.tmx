@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="13" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="17" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="mmtileset" tilewidth="16" tileheight="16" spacing="2" margin="2">
   <image source="mmtileset.png" trans="ff00ff" width="476" height="420"/>
  </tileset>
- <layer name="background" width="50" height="13">
+ <layer name="background" width="50" height="17">
   <data encoding="base64" compression="zlib">
-   eJztzDERACAMwMCgnXoCYRUAElqOMcNftuSAlCRJ0jcTCOpd1260+3/tAffUWnY=
+   eJztzDERACAMwMCgnaqoEZAHEloGpgx/2ZIDUpIkSZI+mEBQ77p2o93/aw/WwwCe
   </data>
  </layer>
  <objectgroup name="ground">
-  <object x="0" y="192" width="800" height="16"/>
+  <object x="0" y="256" width="800" height="16"/>
  </objectgroup>
 </map>

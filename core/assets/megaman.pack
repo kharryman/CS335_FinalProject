@@ -1,0 +1,12 @@
+
+megaman.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+megamanspritesheet
+  rotate: false
+  xy: 1, 1
+  size: 322, 405
+  orig: 322, 405
+  offset: 0, 0
+  index: -1
