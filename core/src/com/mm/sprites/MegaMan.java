@@ -28,6 +28,14 @@ public class MegaMan extends Sprite{
 	
 	public Animation anim;
 	public float stateTime;
+	
+	//Box2D Collision Bits:
+	public static final short GROUND_BIT = 1;
+	public static final short MEGAMAN_BIT = 2;
+	public static final short DESTROYED_BIT = 4;
+	public static final short OBJECT_BIT = 8;
+	public static final short ENEMY_BIT = 16;
+	public static final short ENEMY_HEAD_BIT = 32;
 
 	
 	
@@ -134,6 +142,10 @@ public class MegaMan extends Sprite{
 		FixtureDef fdef = new FixtureDef();
 		CircleShape shape = new CircleShape(); //mega mans hit box shape
 		shape.setRadius(7/ppm);
+		fdef.filter.maskBits = MegaMan.GROUND_BIT |
+				MegaMan.ENEMY_BIT |
+				MegaMan.OBJECT_BIT |
+				MegaMan.ENEMY_HEAD_BIT;
 		
 		fdef.shape = shape;
 		b2body.createFixture(fdef);
@@ -141,6 +153,10 @@ public class MegaMan extends Sprite{
 		if(this.b2body.getLinearVelocity().y > 2){
 			this.b2body.setLinearVelocity(0, .01f);
 		}
+		
+		fdef.isSensor = true;
+		
+		b2body.createFixture(fdef).setUserData("mm");
 		
 		
 	}

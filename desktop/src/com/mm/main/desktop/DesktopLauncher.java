@@ -12,7 +12,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		config.height = (int)screenSize.height;
-		config.width = (int)screenSize.width / 2;
+		config.width = (int)screenSize.width;
 		config.fullscreen = true;
 		config.vSyncEnabled = true;
 

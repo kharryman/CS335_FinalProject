@@ -5,8 +5,10 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -26,6 +28,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mm.main.MegaManGame;
 import com.mm.scenes.Hud;
 import com.mm.sprites.MegaMan;
+import com.mm.sprites.enemies.Enemy;
+import com.mm.sprites.enemies.Met;
+import com.mm.tools.B2WorldCreator;
+import com.mm.tools.WorldContactListener;
 
 /**
  * 
@@ -42,21 +48,23 @@ public class PlayScreen implements Screen {
 	private OrthographicCamera gamecam;
 	private Viewport gamePort;
 	private Hud hud;
-	private float ppm = MegaManGame.PPM;
-	private MegaMan player;
+	private float ppm = MegaManGame.PPM;	
+	private TextureRegion metCurrentFrame;
 	
-	//tiled map variables
+	//tiled map variables:
 	private TmxMapLoader mapLoader;
 	private TiledMap map;
 	private MapProperties mapProperties;
-	private OrthogonalTiledMapRenderer renderer;
-	private final int  SCALE_ADJUST = 0;
+	private OrthogonalTiledMapRenderer renderer;	
 	
-	//Box2d variables
+	//Box2d variables:
 	private World world;
 	private Box2DDebugRenderer b2dr; //draws hit-boxes
+	private B2WorldCreator creator;
 	
-
+    //sprite:
+	private MegaMan player;
+	
 	
 	
 	public PlayScreen(MegaManGame game, String mapName, int mapType){
@@ -75,31 +83,16 @@ public class PlayScreen implements Screen {
 
 		map = mapLoader.load(mapName, params); 
 		mapProperties = map.getProperties();
-		renderer = new OrthogonalTiledMapRenderer(map, 1/(ppm+SCALE_ADJUST));
+		renderer = new OrthogonalTiledMapRenderer(map, 1/(ppm+MegaManGame.SCALE_ADJUST));
 		gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0); //set starting position for camera
 		
 		world = new World(new Vector2(0, -10), true);
 		b2dr = new Box2DDebugRenderer();
 		
+		creator = new B2WorldCreator(this);
 		
-		BodyDef bdef = new BodyDef();
-		PolygonShape shape = new PolygonShape();
-		FixtureDef fdef = new FixtureDef();
-		Body body;
-		
-		//create and add ground objects
-		for(MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)){
-			Rectangle rect = ((RectangleMapObject) object).getRectangle();
-			bdef.type = BodyDef.BodyType.StaticBody;
-			bdef.position.set((rect.getX() + rect.getWidth() / 2)/(ppm + SCALE_ADJUST), (rect.getY() + rect.getHeight() / 2)/(ppm + SCALE_ADJUST));
-			body = world.createBody(bdef);
-			
-			shape.setAsBox((rect.getWidth() / 2)/(ppm + SCALE_ADJUST), (rect.getHeight() / 2)/(ppm + SCALE_ADJUST));
-			fdef.shape = shape;
-			body.createFixture(fdef);
-		}
-		
-
+				
+		world.setContactListener(new WorldContactListener());
 	}
 	
 	
@@ -117,6 +110,8 @@ public class PlayScreen implements Screen {
 	
 	
 	
+	
+	
 	//update game world
 	public void update(float dt){
 		handleInput(dt);
@@ -124,7 +119,8 @@ public class PlayScreen implements Screen {
 		world.step(1/60f, 6, 2);
 		
 		player.update(dt);
-		
+        for (Enemy enemy : creator.getMets())
+        	enemy.update(dt);
 		int mapLeft = 0;
 		int mapRight = 0 + mapProperties.get("width", Integer.class);
 		int mapBottom = 0;
@@ -132,7 +128,7 @@ public class PlayScreen implements Screen {
 		float cameraHalfWidth = gamecam.viewportWidth * .5f;
 		float cameraHalfHeight = gamecam.viewportHeight * .5f;
 		
-		// attacth camera to player
+		// attach camera to player
 		gamecam.position.y = player.b2body.getPosition().y;
 		gamecam.position.x = player.b2body.getPosition().x;
 
@@ -168,10 +164,10 @@ public class PlayScreen implements Screen {
 		
 		
 		//debug stuff
-		System.out.println(String.format("Player: x=%f     y=%f     gamecam width = %f     gamecam height = %f" +
-				"     mapwidth = %d     camright = %f     mapRight = %d", player.b2body.getPosition().x, player.b2body.getPosition().y,
-				gamecam.viewportWidth, gamecam.viewportHeight, mapProperties.get("width", Integer.class), cameraRight, mapRight
-				));
+//		System.out.println(String.format("Player: x=%f     y=%f     gamecam width = %f     gamecam height = %f" +
+//				"     mapwidth = %d     camright = %f     mapRight = %d", player.b2body.getPosition().x, player.b2body.getPosition().y,
+//				gamecam.viewportWidth, gamecam.viewportHeight, mapProperties.get("width", Integer.class), cameraRight, mapRight
+//				));
 		
 		
 		
@@ -228,6 +224,10 @@ public class PlayScreen implements Screen {
 	public World getWorld(){
 		return this.world;
 	}
+	
+	public TiledMap getMap(){
+		return map;
+	}
 
 
 
@@ -248,6 +248,13 @@ public class PlayScreen implements Screen {
 		game.batch.setProjectionMatrix(gamecam.combined);
 		game.batch.begin();
 		player.draw(game.batch);
+		for (Enemy enemy : creator.getMets())
+        	enemy.draw(game.batch);
+		game.batch.end();		
+		
+		//draw met:		
+		game.batch.begin();	
+		
 		game.batch.end();
 		
 		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);

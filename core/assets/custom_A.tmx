@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="17" tilewidth="16" tileheight="16">
- <tileset firstgid="1" name="mmtileset" tilewidth="16" tileheight="16" spacing="2" margin="2">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="17" tilewidth="16" tileheight="16" nextobjectid="13">
+ <tileset firstgid="1" name="mmtileset" tilewidth="16" tileheight="16" spacing="2" margin="2" tilecount="598">
   <image source="mmtileset.png" trans="ff00ff" width="476" height="420"/>
+ </tileset>
+ <tileset firstgid="599" name="drlightmm7sheet" tilewidth="16" tileheight="16" spacing="2" margin="1" tilecount="126">
+  <image source="drlightmm7sheet.png" width="380" height="108"/>
  </tileset>
  <layer name="background" width="50" height="17">
   <data encoding="base64" compression="zlib">
@@ -9,6 +12,12 @@
   </data>
  </layer>
  <objectgroup name="ground">
-  <object x="0" y="256" width="800" height="16"/>
+  <object id="1" x="0" y="256" width="800" height="16"/>
+ </objectgroup>
+ <objectgroup name="mets">
+  <object id="9" x="197" y="244"/>
+  <object id="10" x="371" y="246"/>
+  <object id="11" x="593" y="243"/>
+  <object id="12" x="750" y="243"/>
  </objectgroup>
 </map>
